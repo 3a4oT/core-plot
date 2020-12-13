@@ -5,7 +5,7 @@ Pod::Spec.new do |s|
   s.summary  = 'Cocoa plotting framework for macOS, iOS, and tvOS.'
   s.homepage = 'https://github.com/core-plot'
   s.social_media_url  = 'https://twitter.com/CorePlot'
-  s.documentation_url = 'http://core-plot.github.io'
+  s.documentation_url = 'https://core-plot.github.io'
  
   s.authors  = { 'Drew McCormack' => 'drewmccormack@mac.com',
                  'Brad Larson'    => 'larson@sunsetlakesoftware.com',
@@ -18,18 +18,17 @@ Pod::Spec.new do |s|
                   'of data, and is tightly integrated with Apple technologies like Core Animation, ' \
                   'Core Data, and Cocoa Bindings.'
 
-  s.ios.deployment_target = '8.0'
-  s.osx.deployment_target = '10.8'
+  s.ios.deployment_target = '9.0'
+  s.osx.deployment_target = '10.9'
   s.tvos.deployment_target = '9.0'
   
   s.ios.header_dir = 'ios'
   s.osx.header_dir = 'osx'
   s.tvos.header_dir = 'tvos'
   
-  s.source_files = 'framework/Source/*.{h,m}', 'framework/CocoaPods/*.h'
+  s.source_files = 'framework/Source/*.{h,m}', 'framework/CocoaPods/*.h', 'framework/PlatformSpecific/*.{h,m}'
   s.exclude_files = '**/*{TestCase,Tests}.{h,m}', '**/mainpage.h'
-  s.ios.source_files = 'framework/CorePlot-CocoaTouch.h', 'framework/iPhoneOnly/*.{h,m}'
-  s.tvos.source_files = 'framework/iPhoneOnly/*.{h,m}'
+  s.ios.source_files = 'framework/CorePlot-CocoaTouch.h'
   s.osx.source_files = 'framework/MacOnly/*.{h,m}'
   s.private_header_files = '**/_*.h'
 

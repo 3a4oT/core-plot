@@ -125,6 +125,7 @@ typedef NSMutableOrderedSet<NSString *> CPTMutableCategorySet;
     [coder encodeConditionalObject:self.graph forKey:@"CPTPlotSpace.graph"];
     [coder encodeObject:self.identifier forKey:@"CPTPlotSpace.identifier"];
     id<CPTPlotSpaceDelegate> theDelegate = self.delegate;
+
     if ( [theDelegate conformsToProtocol:@protocol(NSCoding)] ) {
         [coder encodeConditionalObject:theDelegate forKey:@"CPTPlotSpace.delegate"];
     }
@@ -452,7 +453,7 @@ typedef NSMutableOrderedSet<NSString *> CPTMutableCategorySet;
     return handledByDelegate;
 }
 
-#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_MACCATALYST
 #else
 
 /**
@@ -656,6 +657,7 @@ typedef NSMutableOrderedSet<NSString *> CPTMutableCategorySet;
 
     // Determine union of ranges
     CPTMutablePlotRange *unionRange = nil;
+
     for ( CPTPlot *plot in plots ) {
         CPTPlotRange *currentRange = [plot plotRangeForCoordinate:coordinate];
         if ( !unionRange ) {
@@ -692,6 +694,7 @@ typedef NSMutableOrderedSet<NSString *> CPTMutableCategorySet;
 
     // Determine union of ranges
     CPTMutablePlotRange *unionRange = nil;
+
     for ( CPTPlot *plot in plots ) {
         CPTPlotRange *currentRange = [plot plotRangeForCoordinate:coordinate];
         if ( !unionRange ) {

@@ -198,6 +198,7 @@ CPTImageSlices;
     [coder encodeBool:self.tileAnchoredToContext forKey:@"CPTImage.tileAnchoredToContext"];
 
     CPTEdgeInsets insets = self.edgeInsets;
+
     [coder encodeCGFloat:insets.top forKey:@"CPTImage.edgeInsets.top"];
     [coder encodeCGFloat:insets.left forKey:@"CPTImage.edgeInsets.left"];
     [coder encodeCGFloat:insets.bottom forKey:@"CPTImage.edgeInsets.bottom"];
@@ -523,7 +524,7 @@ CPTImageSlices;
     if ( !nativeImage ) {
         CGImageRef imageRef = self.image;
 
-#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_MACCATALYST
         CGFloat theScale = self.scale;
 
         if ( imageRef && (theScale > CPTFloat(0.0))) {
@@ -745,7 +746,7 @@ CPTImageSlices;
         CPTNativeImage *theNativeImage = self.nativeImage;
 
         if ( theNativeImage ) {
-#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_MACCATALYST
             theImage   = theNativeImage.CGImage;
             self.scale = theNativeImage.scale;
 #else

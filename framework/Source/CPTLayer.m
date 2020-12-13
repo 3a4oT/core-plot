@@ -338,6 +338,7 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
             [super display];
         }
 #else
+#ifdef __IPHONE_13_0
         if ( @available(iOS 13, *)) {
             if ( [UITraitCollection instancesRespondToSelector:@selector(performAsCurrentTraitCollection:)] ) {
                 UITraitCollection *traitCollection = ((UIView *)self.graph.hostingView).traitCollection;
@@ -357,6 +358,9 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
         else {
             [super display];
         }
+#else
+        [super display];
+#endif
 #endif
 #pragma clang diagnostic pop
     }
@@ -546,7 +550,7 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
     return NO;
 }
 
-#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_MACCATALYST
 #else
 -(BOOL)scrollWheelEvent:(nonnull CPTNativeEvent *__unused)event fromPoint:(CGPoint __unused)fromPoint toPoint:(CGPoint __unused)toPoint
 {
@@ -747,6 +751,7 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
 
     Class layerClass = [CPTLayer class];
     CGFloat scale    = self.contentsScale;
+
     for ( CALayer *layer in sublayers ) {
         if ( [layer isKindOfClass:layerClass] ) {
             ((CPTLayer *)layer).contentsScale = scale;
@@ -854,14 +859,17 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
     }
 
     CGAffineTransform sublayerTransform = CATransform3DGetAffineTransform(sublayer.transform);
+
     CGContextConcatCTM(context, CGAffineTransformInvert(sublayerTransform));
 
     CALayer *superlayer = self.superlayer;
+
     if ( [superlayer isKindOfClass:[CPTLayer class]] ) {
         [(CPTLayer *) superlayer applySublayerMaskToContext:context forSublayer:self withOffset:layerOffset];
     }
 
     CGPathRef maskPath = self.sublayerMaskingPath;
+
     if ( maskPath ) {
         CGContextTranslateCTM(context, -layerOffset.x, -layerOffset.y);
         CGContextAddPath(context, maskPath);
@@ -888,6 +896,7 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
     }
 
     CGPathRef maskPath = self.maskingPath;
+
     if ( maskPath ) {
         CGContextAddPath(context, maskPath);
         CGContextClip(context);
@@ -901,6 +910,7 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
     [super setNeedsLayout];
 
     CPTGraph *theGraph = self.graph;
+
     if ( theGraph ) {
         [[NSNotificationCenter defaultCenter] postNotificationName:CPTGraphNeedsRedrawNotification
                                                             object:theGraph];
@@ -912,6 +922,7 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
     [super setNeedsDisplay];
 
     CPTGraph *theGraph = self.graph;
+
     if ( theGraph ) {
         [[NSNotificationCenter defaultCenter] postNotificationName:CPTGraphNeedsRedrawNotification
                                                             object:theGraph];
